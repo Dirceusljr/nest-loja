@@ -1,43 +1,47 @@
-import { ArrayMinSize, IsArray, IsCurrency, IsDecimal, IsNotEmpty, IsNumber, isPositive, IsPositive, IsString, IsUUID, Max, MaxLength, min, Min, ValidateNested } from "class-validator";
+import { ArrayMinSize, IsArray, IsCurrency, IsDecimal, IsNotEmpty, IsNumber, IsOptional, isPositive, IsPositive, IsString, IsUUID, Max, MaxLength, min, Min, ValidateNested } from "class-validator";
 import { CaracteristicaProdutoDTO } from "./CaracteristicaProduto.dto";
 import { ImagemProdutoDTO } from "./ImagemProduto.dto";
 import { Type } from "class-transformer";
 
-export class CriaProdutoDTO {
-    @IsUUID(undefined, { message: 'O id deve ser um UUID válido.' })
-    usuarioId: string;
-
+export class AtualizaProdutoDTO {
     @IsString()
     @IsNotEmpty({ message: 'O nome não pode ser vazio.' })
+    @IsOptional()
     nome: string;
 
-    @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
-    @Min(1, { message: 'O valor precisa ser maior que zero' })
+    @IsPositive({ message: 'O valor deve ser maior que zero.' })
+    @IsDecimal({ decimal_digits: '2'}, { message: 'O valor deve ser um número decimal com 2 casas.' })
+    @IsOptional()
     valor: number;
 
     @IsNumber()
     @Min(0, { message: 'A quantidade disponível deve ser maior ou igual a zero.' })
+    @IsOptional()
     quantidadeDisponivel: number;
 
     @IsString()
     @IsNotEmpty({ message: 'A descrição não pode ser vazia.' })
     @MaxLength(1000, { message: 'A descrição deve ter no máximo 1000 caracteres.' })
+    @IsOptional()
     descricao: string;
 
 
     @ValidateNested()
     @IsArray()
     @ArrayMinSize(3, { message: 'Deve haver no mínimo 3 características.' })
-    @Type(() => CaracteristicaProdutoDTO)
+    @IsOptional()
+    @Type(()=> CaracteristicaProdutoDTO)
     caracteristicas: CaracteristicaProdutoDTO[];
 
     @ValidateNested()
     @IsArray()
+    @IsOptional()
     @ArrayMinSize(1, { message: 'Deve haver no mínimo 1 imagem.' })
     @Type(() => ImagemProdutoDTO)
     imagens: ImagemProdutoDTO[];
 
     @IsString()
+    @IsOptional()
     @IsNotEmpty({ message: 'A categoria não pode ser vazia.' })
     categoria: string;
 }
