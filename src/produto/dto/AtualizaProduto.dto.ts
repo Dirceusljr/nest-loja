@@ -10,14 +10,14 @@ export class AtualizaProdutoDTO {
     nome: string;
 
     @IsPositive({ message: 'O valor deve ser maior que zero.' })
-    @IsDecimal({ decimal_digits: '2'}, { message: 'O valor deve ser um número decimal com 2 casas.' })
+    @IsDecimal({ decimal_digits: '2' }, { message: 'O valor deve ser um número decimal com 2 casas.' })
     @IsOptional()
     valor: number;
 
     @IsNumber()
     @Min(0, { message: 'A quantidade disponível deve ser maior ou igual a zero.' })
     @IsOptional()
-    quantidadeDisponivel: number;
+    quantidade: number;
 
     @IsString()
     @IsNotEmpty({ message: 'A descrição não pode ser vazia.' })
@@ -30,7 +30,7 @@ export class AtualizaProdutoDTO {
     @IsArray()
     @ArrayMinSize(3, { message: 'Deve haver no mínimo 3 características.' })
     @IsOptional()
-    @Type(()=> CaracteristicaProdutoDTO)
+    @Type(() => CaracteristicaProdutoDTO)
     caracteristicas: CaracteristicaProdutoDTO[];
 
     @ValidateNested()
