@@ -17,12 +17,12 @@ export class ProdutoController {
         produto.id = await uuid();
         produto.nome = dadosDoProduto.nome;
         produto.valor = dadosDoProduto.valor;
-        produto.quantidadeDisponivel = dadosDoProduto.quantidadeDisponivel;
+        produto.quantidade = dadosDoProduto.quantidade;
         produto.descricao = dadosDoProduto.descricao;
-        produto.caracteristicas = dadosDoProduto.caracteristicas;
-        produto.imagens = dadosDoProduto.imagens;
         produto.categoria = dadosDoProduto.categoria;
-        
+        // produto.caracteristicas = dadosDoProduto.caracteristicas;
+        // produto.imagens = dadosDoProduto.imagens;
+
 
         const produtoCadastrado = await this.produtoRepository.salvar(produto)
         return {
