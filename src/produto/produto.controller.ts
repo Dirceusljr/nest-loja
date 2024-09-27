@@ -12,16 +12,21 @@ import { CriaProdutoDTO } from './dto/CriaProduto.dto';
 import { ProdutoEntity } from './produto.entity';
 import { v4 as uuid } from 'uuid';
 import { AtualizaProdutoDTO } from './dto/AtualizaProduto.dto';
+import { ProdutoService } from './produto.service';
 
 @Controller('/produtos')
 export class ProdutoController {
-  constructor(private produtoRepository: ProdutoRepository) {}
+  constructor(
+    private produtoRepository: ProdutoRepository,
+    private produtoService: ProdutoService,
+  ) {}
 
   @Post()
   async criaProduto(@Body() dadosDoProduto: CriaProdutoDTO) {
     const produto = new ProdutoEntity();
 
     produto.id = await uuid();
+    produto.usuarioId = dadosDoProduto.usuarioId;
     produto.nome = dadosDoProduto.nome;
     produto.valor = dadosDoProduto.valor;
     produto.quantidade = dadosDoProduto.quantidade;
@@ -30,7 +35,7 @@ export class ProdutoController {
     // produto.caracteristicas = dadosDoProduto.caracteristicas;
     // produto.imagens = dadosDoProduto.imagens;
 
-    const produtoCadastrado = await this.produtoRepository.salvar(produto);
+    const produtoCadastrado = await this.produtoService.criaProduto(produto);
     return {
       produto: produtoCadastrado,
       message: 'Produto criado com sucesso',
@@ -39,7 +44,7 @@ export class ProdutoController {
 
   @Get()
   async listaProdutos() {
-    return this.produtoRepository.listar();
+    return this.produtoService.listaProdutos();
   }
 
   @Put('/:id')
@@ -47,7 +52,7 @@ export class ProdutoController {
     @Param('id') id: string,
     @Body() novosDados: AtualizaProdutoDTO,
   ) {
-    const produtoAtualizado = await this.produtoRepository.atualiza(
+    const produtoAtualizado = await this.produtoService.atualizaProduto(
       id,
       novosDados,
     );
@@ -60,7 +65,7 @@ export class ProdutoController {
 
   @Delete('/:id')
   async removeProduto(@Param('id') id: string) {
-    const produtoRemovido = await this.produtoRepository.remove(id);
+    const produtoRemovido = await this.produtoService.deletaProduto(id);
 
     return {
       produto: produtoRemovido,

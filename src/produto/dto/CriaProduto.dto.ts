@@ -4,7 +4,7 @@ import { ImagemProdutoDTO } from "./ImagemProduto.dto";
 import { Type } from "class-transformer";
 
 export class CriaProdutoDTO {
-    @IsUUID(undefined, { message: 'O id deve ser um UUID válido.' })
+    @IsUUID(undefined, { message: 'O id do usuário deve ser um UUID válido.' })
     usuarioId: string;
 
     @IsString()
@@ -25,17 +25,17 @@ export class CriaProdutoDTO {
     descricao: string;
 
 
-    @ValidateNested()
-    @IsArray()
-    @ArrayMinSize(3, { message: 'Deve haver no mínimo 3 características.' })
-    @Type(() => CaracteristicaProdutoDTO)
-    caracteristicas: CaracteristicaProdutoDTO[];
+    // @ValidateNested()
+    // @IsArray()
+    // @ArrayMinSize(3, { message: 'Deve haver no mínimo 3 características.' })
+    // @Type(() => CaracteristicaProdutoDTO)
+    // caracteristicas: CaracteristicaProdutoDTO[];
 
-    @ValidateNested()
-    @IsArray()
-    @ArrayMinSize(1, { message: 'Deve haver no mínimo 1 imagem.' })
-    @Type(() => ImagemProdutoDTO)
-    imagens: ImagemProdutoDTO[];
+    // @ValidateNested()
+    // @IsArray()
+    // @ArrayMinSize(1, { message: 'Deve haver no mínimo 1 imagem.' })
+    // @Type(() => ImagemProdutoDTO)
+    // imagens: ImagemProdutoDTO[];
 
     @IsString()
     @IsNotEmpty({ message: 'A categoria não pode ser vazia.' })
