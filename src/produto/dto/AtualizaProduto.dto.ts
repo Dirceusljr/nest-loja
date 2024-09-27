@@ -9,9 +9,8 @@ export class AtualizaProdutoDTO {
     @IsOptional()
     nome: string;
 
-    @IsPositive({ message: 'O valor deve ser maior que zero.' })
-    @IsDecimal({ decimal_digits: '2' }, { message: 'O valor deve ser um número decimal com 2 casas.' })
-    @IsOptional()
+    @IsNumber({ maxDecimalPlaces: 2, allowNaN: false, allowInfinity: false })
+    @Min(1, { message: 'O valor precisa ser maior que zero' })
     valor: number;
 
     @IsNumber()
