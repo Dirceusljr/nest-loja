@@ -25,17 +25,17 @@ export class CriaProdutoDTO {
     descricao: string;
 
 
-    // @ValidateNested()
-    // @IsArray()
-    // @ArrayMinSize(3, { message: 'Deve haver no mínimo 3 características.' })
-    // @Type(() => CaracteristicaProdutoDTO)
-    // caracteristicas: CaracteristicaProdutoDTO[];
+    @ValidateNested()
+    @IsArray()
+    @ArrayMinSize(1, { message: 'Deve haver no mínimo 1 característica.' })
+    @Type(() => CaracteristicaProdutoDTO)
+    caracteristicas: CaracteristicaProdutoDTO[];
 
-    // @ValidateNested()
-    // @IsArray()
-    // @ArrayMinSize(1, { message: 'Deve haver no mínimo 1 imagem.' })
-    // @Type(() => ImagemProdutoDTO)
-    // imagens: ImagemProdutoDTO[];
+    @ValidateNested()
+    @IsArray()
+    @ArrayMinSize(1, { message: 'Deve haver no mínimo 1 imagem.' })
+    @Type(() => ImagemProdutoDTO)
+    imagens: ImagemProdutoDTO[];
 
     @IsString()
     @IsNotEmpty({ message: 'A categoria não pode ser vazia.' })

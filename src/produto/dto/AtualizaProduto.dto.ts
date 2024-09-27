@@ -27,7 +27,7 @@ export class AtualizaProdutoDTO {
 
     @ValidateNested()
     @IsArray()
-    @ArrayMinSize(3, { message: 'Deve haver no mínimo 3 características.' })
+    @ArrayMinSize(1, { message: 'Deve haver no mínimo 1 característica.' })
     @IsOptional()
     @Type(() => CaracteristicaProdutoDTO)
     caracteristicas: CaracteristicaProdutoDTO[];
