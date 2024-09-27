@@ -1,51 +1,51 @@
-import { Injectable } from "@nestjs/common";
-import { ProdutoEntity } from "./produto.entity";
+import { Injectable } from '@nestjs/common';
+import { ProdutoEntity } from './produto.entity';
 
 @Injectable()
 export class ProdutoRepository {
-    private produtos: ProdutoEntity[] = [];
+  private produtos: ProdutoEntity[] = [];
 
-    async salvar(produto: ProdutoEntity) {
-        this.produtos.push(produto)
+  async salvar(produto: ProdutoEntity) {
+    this.produtos.push(produto);
+  }
+
+  async listar() {
+    return this.produtos;
+  }
+
+  private async buscarPorId(id: string) {
+    const possivelProduto = this.produtos.find(
+      (produtoSalvo) => produtoSalvo.id === id,
+    );
+
+    if (!possivelProduto) {
+      throw new Error('Produto não encontrado');
     }
 
-    async listar() {
-        return this.produtos
-    }
+    return possivelProduto;
+  }
 
-    private async buscarPorId(id: string) {
-        const possivelProduto = this.produtos.find(
-            produtoSalvo => produtoSalvo.id === id
-        );
+  async atualiza(id: string, dadosDeAtualizacao: Partial<ProdutoEntity>) {
+    const produto = await this.buscarPorId(id);
 
-        if (!possivelProduto) {
-            throw new Error('Produto não encontrado')
-        }
+    Object.entries(dadosDeAtualizacao).forEach(([chave, valor]) => {
+      if (chave === 'id' || chave === 'usuarioId') {
+        return;
+      }
 
-        return possivelProduto;
-    }
+      produto[chave] = valor;
+    });
 
-    async atualiza(id: string, dadosDeAtualizacao: Partial<ProdutoEntity>) {
-        const produto = await this.buscarPorId(id);
+    return produto;
+  }
 
-        Object.entries(dadosDeAtualizacao).forEach(([chave, valor]) => {
-            if (chave === 'id' || chave === 'usuarioId') {
-                return;
-            }
+  async remove(id: string) {
+    const produto = await this.buscarPorId(id);
 
-            produto[chave] = valor;
-        })
+    this.produtos = this.produtos.filter(
+      (produtoSalvo) => produtoSalvo.id !== id,
+    );
 
-        return produto;
-    }
-
-    async remove(id: string) {
-        const produto = await this.buscarPorId(id);
-
-        this.produtos = this.produtos.filter(
-            produtoSalvo => produtoSalvo.id !== id
-        )
-
-        return produto;
-    }
+    return produto;
+  }
 }
